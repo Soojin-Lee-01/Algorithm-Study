@@ -19,13 +19,3 @@ for i in range(len(data)):
             count += 1
 
 print(count)
-
-
-
-"""
-stack 이용!
-() 발견하면 그전에 쌓아놓은 (만큼 +
-) 발견하면  +1
-
-예상 시간 복잡도 : O(n)
-"""
