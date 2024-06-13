@@ -1,3 +1,5 @@
+# Solution 1)
+
 # 90도 회전
 def rotate_90(list_2d):
     n = len(list_2d)
@@ -30,3 +32,10 @@ def rotate_270(list_2d):
             new[m-j-1][i] = list_2d[i][j]
     
     return new
+
+# Solution 2)
+
+# 90도 회전
+def rotated_90(array_2d):
+    list_of_tuples = zip(*array_2d[::-1])
+    return [list(e) for e in list_of_tuples]
