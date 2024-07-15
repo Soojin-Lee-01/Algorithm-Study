@@ -1,49 +1,81 @@
 from collections import deque
+import copy
 
-n, m = map(int, input().split(' '))
-graph = [list(map(int, input().split(' '))) for _ in range(n)] # 그래프 구성
-temp = [[0] * m for _ in range(n)] # temp 그래프 구성
+n, m = map(int, input().split())
 
-directions = [(-1, 0), (1, 0), (0, 1), (0, -1)] # 상하좌우 이동
+graph = []
 
-queue = deque()
-result = 0
-def bfs(): # 바이러스가 퍼짐
+for i in range(n):
+    data = list(map(int, input().split()))
+    graph.append(data)
+
+vir = []
+
+# 그래프를 깊은 복사해준다.
+temp_graph = copy.deepcopy(graph)
+
+target = []
+for i in range(n):
+    for j in range(m):
+        if graph[i][j] == 0:
+            vir.append((i, j))
+        if graph[i][j] == 2:
+            target.append((i, j))
+
+result = []
+# 조합
+def combination(n, start = 0, combo = []):
+    if len(combo) == 3:
+        result.append(combo[:])
+        return
+    for i in range(start, len(vir)):
+        combo.append(vir[i])
+        combination(n, i+1, combo)
+        combo.pop()
+
+
+combination(3)
+
+def bfs(nums):
+    queue = deque()
+    visited = [[False for _ in range(m)] for _ in range(n)]
+    for a, b in nums:
+        queue.append((a, b))
+        visited[a][b] = True
+    directions = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+
     while queue:
         cur_r, cur_c = queue.popleft()
         for dr, dc in directions:
             next_r = cur_r + dr
             next_c = cur_c + dc
-
             if 0 <= next_r < n and 0 <= next_c < m:
-                if temp[next_r][next_c] == 0:
-                    queue.append((next_r, next_c))
-                    temp[next_r][next_c] = 2 # 바이러스 퍼짐
+                if not visited[next_r][next_c]:
+                    if graph[next_r][next_c] == 0:
+                        queue.append((next_r, next_c))
+                        visited[next_r][next_c] = True
+                        graph[next_r][next_c] = 2
 
-def wall(cnt):
-    if cnt == 3: # 만약에 벽이 3개 다 세워진다면
-        for i in range(n):
-            for j in range(m):
-                temp[i][j] = graph[i][j]
-                if temp[i][j] == 2: # 만약에 바이러스가 있는 위치라면 큐에 담아준다.
-                    queue.append((i, j))
+    return graph
 
-        bfs() # 바이러스를 퍼트린다.
-        area = 0
-        global result
+max_n = 0
 
-        for i in range(n):
-            area += temp[i].count(0) # 안전 영역 크기를 구한다.
 
-        result = max(result, area) # 안전 영역의 크기가 큰걸 결과에 대입
-        return
+def cou(gra):
+    count = 0
+    for q in range(n):
+        for w in range(m):
+            if gra[q][w] == 0:
+                count += 1
+    return count
 
-    for i in range(n):
-        for j in range(m):
-            if graph[i][j] == 0: # 만약에 빈칸이면
-                graph[i][j] = 1 # 벽을 세운다.
-                wall(cnt+1) # 벽을 하나 더해준다. -> 재귀
-                graph[i][j] = 0 # 벽을 없앤다.
-
-wall(0) # 처음은 벽이 없다.
-print(result)
+for i in range(len(result)):
+    temp = result[i]
+    for x, y in temp:
+        graph[x][y] = 1
+    bfs(target)
+    co = cou(graph)
+    max_n = max(max_n, co)
+    # 깊은 복사 해준다.
+    graph = copy.deepcopy(temp_graph)
+print(max_n)
