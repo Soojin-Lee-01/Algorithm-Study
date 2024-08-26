@@ -1,0 +1,28 @@
+// 코틀린 문법 정리를 해보자!
+
+1) 큰수로 초기화 선언 -> 최솟값 찾을때
+  - var result = Int.MAX_VALUE
+
+2) 1차원 리스트 - 수정 0
+  - val list = mutableListOf<Int>()
+  - val list = mutableListOf<String>()
+  - val list = mutableListOf<Char>()
+
+3) for 문
+  - 첫번째 : for (i in 1..s.length)
+  - 두번째 : for (i in 0 until s.length)
+  - 세번째 : for (i in 0 until s.length step (2))
+  - 네번째 : repeat(n)
+
+4) 문자열 슬라이싱
+  - 문자열일때!!!
+    -> s.substring(1, 2)
+
+5) 최댓값, 최솟값
+  - minOf(2, 4)
+  - maxOf(3, 6)
+
+6) 리스트 하나씩 출력
+  - for (i in data.indices) == for i in range(len(data))
+    - i 는 인덱스
+    - 값은 data[i]
