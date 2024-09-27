@@ -1,47 +1,30 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 
-    public ArrayList<Character> solution(String data) {
-        ArrayList<Character> answer = new ArrayList<>();
-        int count = 0;
-        String temp = "";
+    public String solution(String word) {
+        String answer = "";
+        int count = 1;
 
-        for (int i = 0 ; i < data.length() ; i ++) {
-            if (i == 0) {
-                temp = String.valueOf(data.charAt(i));
-                count++;
-            } else {
-                if (temp.equals(String.valueOf(data.charAt(i)))) {
-                    count++;
-                } else {
-                    answer.add(temp.charAt(0));
-                    if (count > 1) {
-                        answer.add(String.valueOf(count).charAt(0));
-                    }
-                    temp = String.valueOf(data.charAt(i));
-                    count = 1;
+        word += ' ';
 
-                }
+        for (int i = 0 ; i < word.length()-1 ; i++) {
+            if (word.charAt(i) == word.charAt(i+1)) count++;
+            else {
+                answer += word.charAt(i);
+                if (count > 1) answer += String.valueOf(count);
+                count = 1;
             }
         }
-
-        answer.add(temp.charAt(0));
-        if (count > 1) {
-            answer.add(String.valueOf(count).charAt(0));
-        }
-
         return answer;
     }
+
     public static void main(String[] args) {
         Main T = new Main();
         Scanner scanner = new Scanner(System.in);
         String word = scanner.next();
-        for (char x : T.solution(word)) {
-            System.out.print(x);
-        }
 
+        System.out.println(T.solution(word));
     }
 
 }
